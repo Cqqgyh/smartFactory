@@ -24,7 +24,18 @@
  * */
 // 方便dev环境调试开发的路由
 import { RouteRecordRaw } from 'vue-router'
-const LAYOUT = () => import('@/layouts/index.vue')
+// const LAYOUT = () => import('@/layouts/index.vue')
 export const devRoutes: RouteRecordRaw[] = [
-
+  {
+    name: 'smartFactory',
+    path: '/smartFactory',
+    component: () => import('@/views/smartFactory/smartFactory.vue'),
+    meta: {
+      title: '智慧工厂',
+      icon: 'HomeFilled',
+      /** 菜单是否全屏 (示例：数据大屏页面) */
+      isFull: true,
+    },
+    children: [],
+  },
 ]
