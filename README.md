@@ -1,4 +1,4 @@
-## 硅谷听书后台管理系统
+## 智慧工厂
 
 采用 vue3 全家桶（vite+pinia+element-plus+vue-router@4）
 
@@ -61,6 +61,8 @@ guiug-sph-mall-admin
 │  ├─ hooks               # 常用 Hooks 封装
 │  ├─ languages           # 语言国际化 i18n
 │  ├─ layouts             # 框架布局模块
+│  ├─ layouts             # 框架布局模块
+│  ├─ mock                # mock数据
 │  ├─ routers             # 路由管理
 │  ├─ stores              # pinia store
 │  ├─ styles              # 全局样式文件
