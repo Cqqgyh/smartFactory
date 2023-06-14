@@ -15,32 +15,26 @@
 import { ComponentPublicInstance, onMounted, Ref, ref } from 'vue'
 // 导入整个 three.js核心库
 import * as THREE from 'three'
+import { Object3D } from 'three'
 import Viewer, { type Animate } from '@/modules/Viewer'
 import ModelLoader from '@/modules/ModelLoder'
 import Event from '@/modules/Viewer/Events'
 import BoxHelperWrap from '@/modules/BoxHelperWrap'
 import { checkNameIncludes, findParent } from '@/utils'
 import Popover from './Popover/index.vue'
-import { Object3D } from 'three'
 
 const containerRef = ref<ComponentPublicInstance>()
 let viewer: Viewer
 let modelLoader: ModelLoader
 let boxHelperWrap: BoxHelperWrap
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let dataCenter: any = null
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let oldDataCenter: any = null
-
 const popoverRef: Ref = ref(null)
 const popoverTop = ref(0)
 const popoverLeft = ref(0)
 const popoverData = ref<any>({})
-
 // 在模型中查找所有机架对象，并将其添加到 rackList 中
 const rackList = ref([] as Object3D[])
-
+// 加载
 const init = () => {
   viewer = new Viewer('containerRef')
   // viewer.addAxis();
@@ -75,6 +69,7 @@ const planeAnimate = (texture: any): Animate => {
     content: viewer,
   }
 }
+// 加载模型
 const initModel = () => {
   // 底部线条
   modelLoader.loadModelToScene('/models/plane.glb', (baseModel) => {
@@ -103,14 +98,22 @@ const initModel = () => {
     // model.uuid = 'GuiGu-厂房1'
     // 启用基础模型的投射阴影功能
     baseModel.openCastShadow()
-    // 将模型保存至 dataCenter 和 oldDataCenter 变量
-    dataCenter = baseModel
-    oldDataCenter = model.clone()
     console.log('model.traverse', model.traverse)
     console.log('model', model)
-    model.traverse((item) => {
+    model.traverse((item: any) => {
       if (checkIsRack(item)) {
         rackList.value.push(item)
+      }
+      // 保存原始颜色数据，以及警告颜色
+      if (item.isMesh) {
+        item.material.warningColor = {
+          r: 1,
+          g: 0,
+          b: 0,
+          isColor: true,
+        }
+        // 保存旧的材质
+        item.oldMaterial = item.material
       }
     })
     console.log(rackList.value, 'rackList------')
@@ -118,9 +121,11 @@ const initModel = () => {
     viewer.setRaycasterObjects(rackList.value)
   })
 }
+
 function checkIsRack(obj: any): boolean {
   return checkNameIncludes(obj, 'GuiGu')
 }
+
 const onMouseMove = (intersects: THREE.Intersection[]) => {
   if (!intersects.length) {
     popoverRef.value.setShow(false)
@@ -158,9 +163,35 @@ const updateRackInfo = (name: string) => {
     popoverRef.value.setShow(false)
   }
 }
+// 修改颜色
+const changeWarningColor = (model: Object3D) => {
+  model.traverseVisible((item: any) => {
+    if (item.isMesh) {
+      item.material = new THREE.MeshStandardMaterial()
+      item.material.color = item.oldMaterial.warningColor
+    }
+  })
+}
+// 还原成原始颜色
+const changeOriginColor = (model: Object3D) => {
+  model.traverse((item: any) => {
+    // 修改颜色
+    if (item.isMesh) {
+      item.material = item.oldMaterial
+    }
+  })
+}
 onMounted(() => {
   init()
   initModel()
+  // 测试修改颜色
+  setTimeout(() => {
+    changeWarningColor(rackList.value[0])
+  }, 5000)
+  // 测试还原颜色
+  setTimeout(() => {
+    changeOriginColor(rackList.value[0])
+  }, 10000)
 })
 </script>
 
