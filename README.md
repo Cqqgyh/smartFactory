@@ -61,8 +61,8 @@ guiug-sph-mall-admin
 │  ├─ hooks               # 常用 Hooks 封装
 │  ├─ languages           # 语言国际化 i18n
 │  ├─ layouts             # 框架布局模块
-│  ├─ layouts             # 框架布局模块
 │  ├─ mock                # mock数据
+│  ├─ modules             # threeJs相关
 │  ├─ routers             # 路由管理
 │  ├─ stores              # pinia store
 │  ├─ styles              # 全局样式文件
@@ -95,4 +95,3 @@ guiug-sph-mall-admin
 └─ vite.config.ts         # vite 全局配置文件
 ```
 ## 文档地址
-http://139.198.163.91:8510/doc.html
