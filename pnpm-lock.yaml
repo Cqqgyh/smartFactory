@@ -27,6 +27,7 @@ specifiers:
   eslint-plugin-vue: ^9.9.0
   husky: ^8.0.0
   lint-staged: ^13.1.0
+  lodash-es: ^4.17.21
   mitt: ^3.0.0
   mockjs: ^1.1.0
   nprogress: ^0.2.0
@@ -68,6 +69,7 @@ dependencies:
   echarts: registry.npmmirror.com/echarts/5.4.1
   echarts-liquidfill: registry.npmmirror.com/echarts-liquidfill/3.1.0_echarts@5.4.1
   element-plus: registry.npmmirror.com/element-plus/2.2.28_vue@3.2.45
+  lodash-es: registry.npmmirror.com/lodash-es/4.17.21
   nprogress: registry.npmmirror.com/nprogress/0.2.0
   path-browserify: 1.0.1
   pinia: registry.npmmirror.com/pinia/2.0.30_prq2uz4lho2pwp6irk4cfkrxwu

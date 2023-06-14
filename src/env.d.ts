@@ -6,3 +6,4 @@ declare module '*.vue' {
   export default component
 }
 declare module 'mockjs'
+declare module 'lodash-es'
