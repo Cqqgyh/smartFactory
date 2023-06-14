@@ -52,7 +52,6 @@ const init = () => {
   })
 }
 const planeAnimate = (texture: any): Animate => {
-  console.log(texture, 'texture')
   texture.wrapS = THREE.RepeatWrapping
   texture.wrapT = THREE.RepeatWrapping
   return {
@@ -85,7 +84,6 @@ const initModel = () => {
   })
   // 工厂 garage_factory
   modelLoader.loadModelToScene('/models/GuiGu-factory.glb', (baseModel) => {
-    console.log(baseModel, '1111111')
     // 设置基础模型的缩放比例
     baseModel.setScalc(0.002)
     // 暂时注释掉旋转代码
@@ -98,8 +96,6 @@ const initModel = () => {
     // model.uuid = 'GuiGu-厂房1'
     // 启用基础模型的投射阴影功能
     baseModel.openCastShadow()
-    console.log('model.traverse', model.traverse)
-    console.log('model', model)
     model.traverse((item: any) => {
       if (checkIsRack(item)) {
         rackList.value.push(item)
@@ -116,7 +112,7 @@ const initModel = () => {
         item.oldMaterial = item.material
       }
     })
-    console.log(rackList.value, 'rackList------')
+    console.log('rackList------', rackList.value)
     // 将 rackList 中的机架设置为 viewer 的射线检测对象
     viewer.setRaycasterObjects(rackList.value)
   })
