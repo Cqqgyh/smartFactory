@@ -37,7 +37,7 @@
     "default-passive-events": "^2.0.0",
     "echarts": "^5.4.1",
     "echarts-liquidfill": "^3.1.0",
-    "element-plus": "^2.2.28",
+    "element-plus": "^2.3.6",
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
