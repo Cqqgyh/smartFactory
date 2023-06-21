@@ -19,6 +19,8 @@ import '@/styles/index.scss'
 import '@/assets/fonts/font.scss'
 /** 加载异步路由 */
 import '@/router/initDynamicRouter'
+// 设置rem
+import '@/utils/resetRem'
 
 const app = createApp(App)
 

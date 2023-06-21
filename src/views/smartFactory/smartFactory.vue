@@ -1,194 +1,346 @@
 <template>
-  <div
-    ref="containerRef"
-    id="containerRef"
-    style="width: 100vw; height: 100vh"
-  ></div>
-  <Popover
-    ref="popoverRef"
-    :top="popoverTop"
-    :left="popoverLeft"
-    :data="popoverData"
-  ></Popover>
+  <div class="smart-factory" ref="smartFactoryRef">
+    <Header>GuiGu工厂可视化系统</Header>
+    <div class="smart-factory-content">
+      <div class="smart-factory-content-left">
+        <Panel title="警告信息" border-color="#f67474">
+          <template #title>
+            <span style="color: #f67474">警告信息</span>
+          </template>
+          <el-scrollbar height="9vh">
+            <el-row v-for="item in warningInfoList" :key="item.id">
+              <el-text type="danger">
+                {{
+                  `${item.factoryName}：${item.accidentType} - ${item.accidentDesc}`
+                }}
+              </el-text>
+            </el-row>
+          </el-scrollbar>
+        </Panel>
+        <Panel title="当天产出">
+          <Charts style="height: 40vh" :option="planOption"></Charts>
+        </Panel>
+      </div>
+      <div class="smart-factory-content-right">
+        <Panel title="生产计划">
+          <el-scrollbar height="9vh">
+            <el-row>
+              <el-text type="success" size="large">
+                今日计划总产量：{{ outputValue.dayPlanOutput }}
+              </el-text>
+            </el-row>
+            <el-row>
+              <el-text type="success" size="large">
+                今日实时总产量：{{ outputValue.dayOutput }}
+              </el-text>
+            </el-row>
+            <el-row>
+              <el-text type="success" size="large">
+                完成度：{{
+                  outputValue.dayOutput
+                    ? (
+                        (outputValue.dayOutput / outputValue.dayPlanOutput) *
+                        100
+                      ).toFixed(2) + '%'
+                    : ''
+                }}
+              </el-text>
+            </el-row>
+            <el-row>
+              <el-text type="success" size="large">今日良品率：98%</el-text>
+            </el-row>
+          </el-scrollbar>
+        </Panel>
+        <Panel title="当天事故">
+          <el-scrollbar max-height="40vh">
+            <el-timeline style="padding-top: 0.1rem">
+              <el-timeline-item
+                v-for="(item, index) in accidentInfoList"
+                :key="index"
+                :color="(item.accidentStatus ? '#0bbd87' : '') as any"
+              >
+                <div class="element accident-wrapper">
+                  <el-row>
+                    <el-text :type="item.accidentStatus ? 'primary' : 'danger'">
+                      {{
+                        `事故状态: ${
+                          item.accidentStatus ? '已处理完成' : '未处理完成'
+                        }`
+                      }}
+                    </el-text>
+                  </el-row>
+                  <el-row>
+                    <el-text type="primary">
+                      {{ `事故发生时间: ${item.accidentStartTime}` }}
+                    </el-text>
+                  </el-row>
+                  <el-row v-if="item.accidentEndTime">
+                    <el-text type="primary">
+                      {{ `事故结束时间: ${item.accidentEndTime}` }}
+                    </el-text>
+                  </el-row>
+                  <el-row>
+                    <el-text type="warning">
+                      {{ `事故等级: ${item.accidentLevel}级事故` }}
+                    </el-text>
+                  </el-row>
+                  <el-row>
+                    <el-text type="warning">
+                      {{ `事故类型: ${item.accidentType}` }}
+                    </el-text>
+                  </el-row>
+                  <el-row>
+                    <el-text type="danger">
+                      {{ `事故内容:  ${item.accidentDesc}` }}
+                    </el-text>
+                  </el-row>
+                  <el-row>
+                    <el-text type="success">
+                      {{ `事故处理人: ${item.accidentHandler}` }}
+                    </el-text>
+                  </el-row>
+                </div>
+              </el-timeline-item>
+            </el-timeline>
+          </el-scrollbar>
+        </Panel>
+      </div>
+      <Sence ref="senceRef" :factoryInfoList="factoryInfoList"></Sence>
+    </div>
+  </div>
 </template>
+
 <script setup lang="ts">
-import { ComponentPublicInstance, onMounted, Ref, ref } from 'vue'
-// 导入整个 three.js核心库
-import * as THREE from 'three'
-import { Object3D } from 'three'
-import Viewer, { type Animate } from '@/modules/Viewer'
-import ModelLoader from '@/modules/ModelLoder'
-import Event from '@/modules/Viewer/Events'
-import BoxHelperWrap from '@/modules/BoxHelperWrap'
-import { checkNameIncludes, findParent } from '@/utils'
-import Popover from './Popover/index.vue'
-
-const containerRef = ref<ComponentPublicInstance>()
-let viewer: Viewer
-let modelLoader: ModelLoader
-let boxHelperWrap: BoxHelperWrap
-
-const popoverRef: Ref = ref(null)
-const popoverTop = ref(0)
-const popoverLeft = ref(0)
-const popoverData = ref<any>({})
-// 在模型中查找所有机架对象，并将其添加到 rackList 中
-const rackList = ref([] as Object3D[])
-// 加载
-const init = () => {
-  viewer = new Viewer('containerRef')
-  // viewer.addAxis();
-  // viewer.addStats();
-  viewer.initRaycaster()
-
-  modelLoader = new ModelLoader(viewer)
-  // const floors = new Floors(viewer);
-  // floors.addGird();
-
-  boxHelperWrap = new BoxHelperWrap(viewer)
-
-  viewer.emitter.on(Event.mousemove.raycaster, (list: THREE.Intersection[]) => {
-    onMouseMove(list)
-  })
-}
-const planeAnimate = (texture: any): Animate => {
-  texture.wrapS = THREE.RepeatWrapping
-  texture.wrapT = THREE.RepeatWrapping
-  return {
-    fun: () => {
-      const count = texture.repeat.y
-      if (count <= 10) {
-        texture.repeat.x += 0.01
-        texture.repeat.y += 0.02
-      } else {
-        texture.repeat.x = 0
-        texture.repeat.y = 0
-      }
+import Header from '@/views/smartFactory/components/Header/Header.vue'
+import Sence from '@/views/smartFactory/components/Sence/Sence.vue'
+import Panel from '@/views/smartFactory/components/Panel/Panel.vue'
+import Charts from '@/views/smartFactory/components/Charts/Charts.vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import {
+  AccidentInfoInterfaceRes,
+  FactoryInfoInterfaceRes,
+} from '@/api/smartFactory/types'
+import { ElMessage } from 'element-plus'
+import { getAccidentInfo, getFactoryInfo } from '@/api/smartFactory'
+//#region <计划>
+const planOption = ref({
+  color: ['#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow',
     },
-    content: viewer,
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true,
+  },
+  xAxis: [
+    {
+      type: 'category',
+      axisTick: {
+        alignWithLabel: true,
+      },
+      axisLabel: {
+        interval: 0, // 设置为0表示强制显示所有标签
+        rotate: 45, // 设置旋转角度
+      },
+      data: [
+        '厂房001',
+        '厂房002',
+        '厂房003',
+        '厂房004',
+        '厂房005',
+        '厂房006',
+        '厂房007',
+        '厂房008',
+        '厂房009',
+        '厂房010',
+        '厂房011',
+        '厂房012',
+      ],
+    },
+  ],
+  yAxis: [
+    {
+      type: 'value',
+    },
+  ],
+  series: [
+    {
+      name: '产量',
+      type: 'bar',
+      barWidth: '60%',
+      data: computed(() => {
+        // 找到最小的dayOutput
+        const minDayOutput =
+          !factoryInfoList.value.length ||
+          factoryInfoList.value.reduce((pre, cur) => {
+            return pre.dayOutput < cur.dayOutput ? pre : cur
+          }).dayOutput
+        // 最小的dayOutput设置颜色
+        return factoryInfoList.value.map((item) => {
+          const itemStyle =
+            item.dayOutput === minDayOutput ? { color: '#FFBF00' } : {}
+          return {
+            name: '',
+            value: item.dayOutput,
+            itemStyle,
+          }
+        })
+      }),
+    },
+  ],
+})
+//#endregion
+
+//#region <事故信息>
+const accidentInfoList = ref([] as AccidentInfoInterfaceRes[])
+//获取事故信息
+const getAccidentInfoHandle = async () => {
+  try {
+    const res = await getAccidentInfo()
+    accidentInfoList.value = res.data
+  } catch (error) {
+    console.log(error)
+    ElMessage.error((error as any)?.message || 'Has Error')
   }
 }
-// 加载模型
-const initModel = () => {
-  // 底部线条
-  modelLoader.loadModelToScene('/models/plane.glb', (baseModel) => {
-    const model = baseModel.gltf.scene
-    model.scale.set(0.0001 * 3, 0.0001 * 3, 0.0001 * 3)
-    model.position.set(0, 0, 0)
-    model.name = 'plane'
-    baseModel.openCastShadow()
-
-    const texture = (baseModel.object.children[0] as any).material.map
-    const fnOnj = planeAnimate(texture)
-    viewer.addAnimate(fnOnj)
-  })
-  // 工厂 garage_factory
-  modelLoader.loadModelToScene('/models/GuiGu-factory.glb', (baseModel) => {
-    // 设置基础模型的缩放比例
-    baseModel.setScalc(0.002)
-    // 暂时注释掉旋转代码
-    // baseModel.object.rotation.y = Math.PI / 2
-    // 获取实际的模型对象
-    const model = baseModel.gltf.scene
-    model.position.set(0.5, 0, 0.5)
-    // 为模型设置名称
-    // model.name = 'GuiGu-厂房1'
-    // model.uuid = 'GuiGu-厂房1'
-    // 启用基础模型的投射阴影功能
-    baseModel.openCastShadow()
-    model.traverse((item: any) => {
-      if (checkIsRack(item)) {
-        rackList.value.push(item)
-      }
-      // 保存原始颜色数据，以及警告颜色
-      if (item.isMesh) {
-        item.material.warningColor = {
-          r: 1,
-          g: 0,
-          b: 0,
-          isColor: true,
-        }
-        // 保存旧的材质
-        item.oldMaterial = item.material
-      }
-    })
-    console.log('rackList------', rackList.value)
-    // 将 rackList 中的机架设置为 viewer 的射线检测对象
-    viewer.setRaycasterObjects(rackList.value)
-  })
-}
-
-function checkIsRack(obj: any): boolean {
-  return checkNameIncludes(obj, 'GuiGu')
-}
-
-const onMouseMove = (intersects: THREE.Intersection[]) => {
-  if (!intersects.length) {
-    popoverRef.value.setShow(false)
-    boxHelperWrap.setVisible(false)
-    return
-  }
-  const selectedObject = intersects[0].object || {}
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let selectedObjectName = ''
-  const findClickModel = (object: any) => {
-    if (object.name.includes('GuiGu')) {
-      selectedObjectName = object.name
-      return
+//#endregion
+//#region <工厂信息>
+const factoryInfoList = ref([] as FactoryInfoInterfaceRes[])
+// 计算产值
+const outputValue = computed(() => {
+  return factoryInfoList.value.reduce(
+    (pre, cur) => {
+      pre.dayOutput += cur.dayOutput
+      pre.dayPlanOutput += cur.dayPlanOutput
+      pre.monthPlanOutput += cur.monthPlanOutput
+      pre.monthOutput += cur.monthOutput
+      return pre
+    },
+    {
+      dayOutput: 0,
+      dayPlanOutput: 0,
+      monthPlanOutput: 0,
+      monthOutput: 0,
+    },
+  )
+})
+// 计算警告信息
+const warningInfoList = computed(() => {
+  let warningInfoList = [] as (AccidentInfoInterfaceRes & {
+    factoryName: string
+  })[]
+  factoryInfoList.value.forEach((item) => {
+    if (item.accidentInfoList?.length) {
+      ;(item.accidentInfoList as any).map((item2: any) => {
+        item2.factoryName = item.name
+      })
+      warningInfoList.push(...(item.accidentInfoList as any))
     }
-    if (object.parent) {
-      findClickModel(object.parent)
-    }
-  }
-
-  findClickModel(selectedObject)
-  const rack = findParent(selectedObject, checkIsRack)
-  if (rack) {
-    boxHelperWrap.attach(rack)
-    updateRackInfo(rack.name)
-  }
-}
-const updateRackInfo = (name: string) => {
-  if (name) {
-    popoverRef.value.setShow(true, { name })
-    const event = viewer.mouseEvent as MouseEvent
-    popoverTop.value = event.y + 10
-    popoverLeft.value = event.x + 10
-  } else {
-    popoverRef.value.setShow(false)
-  }
-}
-// 修改颜色
-const changeWarningColor = (model: Object3D) => {
-  model.traverseVisible((item: any) => {
-    if (item.isMesh) {
-      item.material = new THREE.MeshStandardMaterial()
-      item.material.color = item.oldMaterial.warningColor
-    }
   })
+  return warningInfoList
+})
+//获取工厂信息
+const getFactoryInfoHandle = async () => {
+  try {
+    const res = await getFactoryInfo()
+    factoryInfoList.value = res.data
+  } catch (error) {
+    console.log(error)
+    ElMessage.error((error as any)?.message || 'Has Error')
+  }
 }
-// 还原成原始颜色
-const changeOriginColor = (model: Object3D) => {
-  model.traverse((item: any) => {
-    // 修改颜色
-    if (item.isMesh) {
-      item.material = item.oldMaterial
+//#endregion
+//#region <senceRef 子组件>
+const senceRef = ref<InstanceType<typeof Sence>>()
+// 监视工厂信息，修改模型颜色
+watch(
+  factoryInfoList,
+  (newVal) => {
+    if (senceRef.value && newVal.length) {
+      newVal.forEach((item) => {
+        console.log(item)
+        // if (item.accidentInfoList.length) {
+        //   senceRef.value?.changeWarningColorByName(item.name)
+        // } else {
+        //   senceRef.value?.changeOriginColorByName(item.name)
+        // }
+      })
     }
-  })
-}
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+)
+//#endregion
 onMounted(() => {
-  init()
-  initModel()
-  // 测试修改颜色
-  setTimeout(() => {
-    changeWarningColor(rackList.value[0])
-  }, 5000)
-  // 测试还原颜色
-  setTimeout(() => {
-    changeOriginColor(rackList.value[0])
-  }, 10000)
+  // setInterval(() => {
+  //   getFactoryInfoHandle()
+  //   getAccidentInfoHandle()
+  // }, 3000)
+  getFactoryInfoHandle()
+  getAccidentInfoHandle()
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+body,
+html {
+  background-color: #000;
+}
+
+body {
+  overflow: hidden;
+}
+
+.smart-factory {
+  width: 100vw;
+  height: 100vh;
+}
+
+.smart-factory-content {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.smart-factory-content-left {
+  position: absolute;
+  top: 1.1rem;
+  left: 0.3rem;
+  width: 30vw;
+}
+
+.smart-factory-content-right {
+  position: absolute;
+  top: 1.1rem;
+  right: 0.6rem;
+  width: 30vw;
+}
+
+.panel {
+  margin-bottom: 0.3rem;
+}
+
+.element {
+  background: linear-gradient(
+    111deg,
+    rgb(205 215 250 / 10%) 0%,
+    rgb(61 79 240 / 10%) 100%
+  );
+  box-shadow: inset 0 10px 5px 0 rgb(255 255 255 / 15%),
+    inset 0 -10px 5px 0 rgb(205 215 250 / 15%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.accident-wrapper {
+  padding: 0.1rem;
+}
+</style>

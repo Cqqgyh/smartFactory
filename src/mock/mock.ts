@@ -49,7 +49,7 @@ export function useMockOnAny() {
       if (isFunction(dataOrCallback)) {
         return mock?.onAny(url).reply((config: AxiosRequestConfig<any>) => {
           const data = dataOrCallback(config)
-          console.log('config', config)
+          // console.log('config', config)
           return new Promise((resolve) => {
             console.log(url, resultSuccess(data))
             resolve([200, resultSuccess(data)])
@@ -57,8 +57,8 @@ export function useMockOnAny() {
         })
       } else {
         const data = dataOrCallback
-        return mock?.onAny(url).reply((config) => {
-          console.log('config', config)
+        return mock?.onAny(url).reply(() => {
+          // console.log('config', config)
           return new Promise((resolve) => {
             console.log(url, resultSuccess(data))
             resolve([200, resultSuccess(data)])

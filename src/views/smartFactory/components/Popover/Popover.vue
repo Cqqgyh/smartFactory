@@ -11,16 +11,23 @@
       {{ dataRef.name }}
     </div>
     <div class="popover-content">
-      {{ 'content' }}
+      <el-row v-for="item in dataRef.content" :key="item.label">
+        <el-col :span="12">{{ item.label }}</el-col>
+        <el-col :span="12">{{ item.value }}</el-col>
+      </el-row>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup name="Popover">
+<script lang="ts" setup>
 import { ref } from 'vue'
 type PropsTypes = {
   top: number
   left: number
+}
+type DataRefTypes = {
+  name: string
+  content?: { label: string; value: string | number }[]
 }
 
 const props = withDefaults(defineProps<PropsTypes>(), {
@@ -29,7 +36,7 @@ const props = withDefaults(defineProps<PropsTypes>(), {
 })
 
 const isShow = ref(false)
-const dataRef = ref<any>({})
+const dataRef = ref({} as DataRefTypes)
 
 const setShow = (visible: boolean, data?: any) => {
   isShow.value = visible
@@ -44,6 +51,7 @@ defineExpose({
 <style scoped>
 .popover {
   position: absolute;
+  width: 2.5rem;
   font-size: 0.2rem;
   color: #fff;
   background-color: rgb(29 78 216 / 60%);

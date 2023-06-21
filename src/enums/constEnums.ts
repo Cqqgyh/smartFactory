@@ -16,28 +16,6 @@ export function getLabelByValue(
   const item = arr.find((item) => item.value === value)
   return item ? item.label : ''
 }
-// 展示数据 汇总0 PC端 1 移动端 2
-export enum ShowType {
-  All = 0,
-  PC = 1,
-  WAP = 2,
-}
-export const ShowTypeMap = [
-  { label: '汇总', value: ShowType.All },
-  { label: 'PC', value: ShowType.PC },
-  { label: 'WAP', value: ShowType.WAP },
-]
-// 日期类型
-export enum DateType {
-  Day = 0,
-  Week = 1,
-  Month = 2,
-}
-// 活跃类型 0留存 2活跃
-export enum LivenessType {
-  Retain = 0,
-  Active = 1,
-}
 // 按钮权限
 export const ButtonPermission = {
   // 用户管理
@@ -83,29 +61,3 @@ export const ButtonPermission = {
     LoginLogList: 'bnt.sysLoginLog.list',
   },
 }
-// 性别 0 男 1 女
-export enum GenderType {
-  male = 0,
-  female = 1,
-}
-// 性别
-export const GenderTypeMap = [
-  { label: '男', value: GenderType.male },
-  { label: '女', value: GenderType.female },
-]
-// 教育类型
-export enum EducationType {
-  BACHELOR_AND_ABOVE = 0,
-  JUNIOR_COLLEGE = 1,
-  HIGH_SCHOOL = 2,
-  JUNIOR_HIGH_SCHOOL = 3,
-  ELEMENTARY_SCHOOL = 4,
-}
-// 教育类型
-export const EducationTypeMap = [
-  { label: '本科及以上', value: EducationType.BACHELOR_AND_ABOVE },
-  { label: '大专', value: EducationType.JUNIOR_COLLEGE },
-  { label: '高中', value: EducationType.HIGH_SCHOOL },
-  { label: '初中', value: EducationType.JUNIOR_HIGH_SCHOOL },
-  { label: '小学', value: EducationType.ELEMENTARY_SCHOOL },
-]

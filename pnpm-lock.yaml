@@ -18,7 +18,7 @@ specifiers:
   default-passive-events: ^2.0.0
   echarts: ^5.4.1
   echarts-liquidfill: ^3.1.0
-  element-plus: ^2.2.28
+  element-plus: ^2.3.6
   eslint: ^8.33.0
   eslint-config-prettier: ^8.6.0
   eslint-plugin-import: ^2.27.5
@@ -64,11 +64,12 @@ specifiers:
 dependencies:
   '@element-plus/icons-vue': registry.npmmirror.com/@element-plus/icons-vue/2.0.10_vue@3.2.45
   '@vueuse/core': 9.12.0_vue@3.2.45
+  autofit.js: registry.npmmirror.com/autofit.js/2.0.5
   axios: registry.npmmirror.com/axios/1.4.0
   default-passive-events: registry.npmmirror.com/default-passive-events/2.0.0
   echarts: registry.npmmirror.com/echarts/5.4.1
   echarts-liquidfill: registry.npmmirror.com/echarts-liquidfill/3.1.0_echarts@5.4.1
-  element-plus: registry.npmmirror.com/element-plus/2.2.28_vue@3.2.45
+  element-plus: registry.npmmirror.com/element-plus/2.3.6_vue@3.2.45
   lodash-es: registry.npmmirror.com/lodash-es/4.17.21
   nprogress: registry.npmmirror.com/nprogress/0.2.0
   path-browserify: 1.0.1
@@ -1399,6 +1400,12 @@ packages:
       lil-gui: registry.npmmirror.com/lil-gui/0.17.0
     dev: true
 
+  registry.npmmirror.com/@types/web-bluetooth/0.0.16:
+    resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz}
+    name: '@types/web-bluetooth'
+    version: 0.0.16
+    dev: false
+
   registry.npmmirror.com/@types/webxr/0.5.2:
     resolution: {integrity: sha512-szL74BnIcok9m7QwYtVmQ+EdIKwbjPANudfuvDrAF8Cljg9MKUlIoc1w5tjj9PMpeSH3U1Xnx//czQybJ0EfSw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/webxr/-/webxr-0.5.2.tgz}
     name: '@types/webxr'
@@ -1763,6 +1770,39 @@ packages:
     name: '@vue/shared'
     version: 3.2.45
 
+  registry.npmmirror.com/@vueuse/core/9.12.0_vue@3.2.45:
+    resolution: {integrity: sha512-h/Di8Bvf6xRcvS/PvUVheiMYYz3U0tH3X25YxONSaAUBa841ayMwxkuzx/DGUMCW/wHWzD8tRy2zYmOC36r4sg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-9.12.0.tgz}
+    id: registry.npmmirror.com/@vueuse/core/9.12.0
+    name: '@vueuse/core'
+    version: 9.12.0
+    dependencies:
+      '@types/web-bluetooth': registry.npmmirror.com/@types/web-bluetooth/0.0.16
+      '@vueuse/metadata': registry.npmmirror.com/@vueuse/metadata/9.12.0
+      '@vueuse/shared': registry.npmmirror.com/@vueuse/shared/9.12.0_vue@3.2.45
+      vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.45
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  registry.npmmirror.com/@vueuse/metadata/9.12.0:
+    resolution: {integrity: sha512-9oJ9MM9lFLlmvxXUqsR1wLt1uF7EVbP5iYaHJYqk+G2PbMjY6EXvZeTjbdO89HgoF5cI6z49o2zT/jD9SVoNpQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/metadata/-/metadata-9.12.0.tgz}
+    name: '@vueuse/metadata'
+    version: 9.12.0
+    dev: false
+
+  registry.npmmirror.com/@vueuse/shared/9.12.0_vue@3.2.45:
+    resolution: {integrity: sha512-TWuJLACQ0BVithVTRbex4Wf1a1VaRuSpVeyEd4vMUWl54PzlE0ciFUshKCXnlLuD0lxIaLK4Ypj3NXYzZh4+SQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-9.12.0.tgz}
+    id: registry.npmmirror.com/@vueuse/shared/9.12.0
+    name: '@vueuse/shared'
+    version: 9.12.0
+    dependencies:
+      vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.45
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   registry.npmmirror.com/JSONStream/1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/JSONStream/-/JSONStream-1.3.5.tgz}
     name: JSONStream
@@ -2032,6 +2072,12 @@ packages:
     engines: {node: '>= 4.5.0'}
     hasBin: true
     dev: true
+
+  registry.npmmirror.com/autofit.js/2.0.5:
+    resolution: {integrity: sha512-xwNmaZd+A+pVLf4bITBBcU7OSqMCyvDR5BhQmvIIgbvP0u0n/QoFWsMthQTaHR6MR0nrsXf5VxdypyZYvvfnhw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/autofit.js/-/autofit.js-2.0.5.tgz}
+    name: autofit.js
+    version: 2.0.5
+    dev: false
 
   registry.npmmirror.com/available-typed-arrays/1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz}
@@ -3012,11 +3058,11 @@ packages:
     version: 1.4.322
     dev: true
 
-  registry.npmmirror.com/element-plus/2.2.28_vue@3.2.45:
-    resolution: {integrity: sha512-BsxF7iEaBydmRfw1Tt++EO9jRBjbtJr7ZRIrnEwz4J3Cwa1IzHCNCcx3ZwcYTlJq9CYFxv94JnbNr1EbkTou3A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.2.28.tgz}
-    id: registry.npmmirror.com/element-plus/2.2.28
+  registry.npmmirror.com/element-plus/2.3.6_vue@3.2.45:
+    resolution: {integrity: sha512-GLz0pXUYI2zRfIgyI6W7SWmHk6dSEikP9yR++hsQUyy63+WjutoiGpA3SZD4cGPSXUzRFeKfVr8CnYhK5LqXZw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.3.6.tgz}
+    id: registry.npmmirror.com/element-plus/2.3.6
     name: element-plus
-    version: 2.2.28
+    version: 2.3.6
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -3026,7 +3072,7 @@ packages:
       '@popperjs/core': registry.npmmirror.com/@sxzz/popperjs-es/2.11.7
       '@types/lodash': registry.npmmirror.com/@types/lodash/4.14.191
       '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
-      '@vueuse/core': 9.12.0_vue@3.2.45
+      '@vueuse/core': registry.npmmirror.com/@vueuse/core/9.12.0_vue@3.2.45
       async-validator: registry.npmmirror.com/async-validator/4.2.5
       dayjs: registry.npmmirror.com/dayjs/1.11.7
       escape-html: registry.npmmirror.com/escape-html/1.0.3
