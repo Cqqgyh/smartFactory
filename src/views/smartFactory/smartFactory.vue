@@ -332,7 +332,7 @@ onMounted(() => {
   timer = setInterval(() => {
     getFactoryInfoHandle()
     getAccidentInfoHandle()
-  }, 10000)
+  }, 1000 * 30)
 })
 onUnmounted(() => {
   clearInterval(timer)
