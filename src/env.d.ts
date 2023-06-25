@@ -7,3 +7,4 @@ declare module '*.vue' {
 }
 declare module 'mockjs'
 declare module 'lodash-es'
+declare module 'vue-grid-layout'

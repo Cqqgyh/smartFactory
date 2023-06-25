@@ -21,6 +21,8 @@ import '@/assets/fonts/font.scss'
 import '@/router/initDynamicRouter'
 // 设置rem
 import '@/utils/resetRem'
+// 引入网格布局
+import VueGridLayout from 'vue-grid-layout'
 
 const app = createApp(App)
 
@@ -32,6 +34,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(ElementPlus, {
   locale: zhCn,
 })
+app.use(VueGridLayout)
 
 app.use(registerGlobComp)
 

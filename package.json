@@ -46,6 +46,7 @@
     "three": "^0.153.0",
     "vue": "^3.2.45",
     "vue-echarts": "^6.5.5",
+    "vue-grid-layout": "3.0.0-beta1",
     "vue-router": "4"
   },
   "devDependencies": {

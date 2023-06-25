@@ -27,35 +27,20 @@ const props = defineProps({
   position: relative;
   z-index: 2;
   box-sizing: border-box;
-  width: 30vw;
   min-width: 300px;
-  height: 100%;
   padding: 20px;
   color: #fff;
-
-  /* padding: 0.1rem 0.2rem; */
-  background: linear-gradient(
-        v-bind('props.borderColor'),
-        v-bind('props.borderColor')
-      )
-      left -3px top 0,
+  background: rgb(0 34 51 / 60%)
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      left -3px top -3px,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      right -3px top 0,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      right -3px top -3px,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      left -3px bottom 0,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      left -3px bottom -3px,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      right -3px bottom 0,
     linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
-      right -3px bottom -3px;
-  background-color: rgb(0 34 51 / 60%);
-  background-repeat: no-repeat;
-  background-size: 20px 20px, 20px 20px;
+    linear-gradient(v-bind('props.borderColor'), v-bind('props.borderColor'))
+    no-repeat left -3px top 0 left -3px top -3px right -3px top 0 right -3px top -3px
+    left -3px bottom 0 left -3px bottom -3px right -3px bottom 0 right -3px bottom -3px;
   background-size: 3px 16px, 16px 3px;
   border: 1px solid transparent;
   backdrop-filter: blur(1px);

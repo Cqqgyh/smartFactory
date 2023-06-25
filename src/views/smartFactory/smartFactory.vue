@@ -1,127 +1,132 @@
 <template>
-  <div class="smart-factory" ref="smartFactoryRef">
-    <Header>GuiGu工厂可视化系统</Header>
-    <div class="smart-factory-content">
-      <div class="smart-factory-content-left">
-        <Panel title="警告信息" border-color="#f67474">
-          <template #title>
-            <span style="color: #f67474">警告信息</span>
-          </template>
-          <el-scrollbar height="9vh">
-            <el-row v-for="item in warningInfoList" :key="item.id">
-              <el-text type="danger">
-                {{
-                  `${item.factoryName}：${item.accidentType} - ${item.accidentDesc}`
-                }}
-              </el-text>
-            </el-row>
-          </el-scrollbar>
-        </Panel>
-        <Panel title="当天产出">
-          <Charts style="height: 40vh" :option="planOption"></Charts>
-        </Panel>
-      </div>
-      <div class="smart-factory-content-right">
-        <Panel title="生产计划">
-          <el-scrollbar height="9vh">
-            <el-row>
-              <el-text type="success" size="large">
-                今日计划总产量：{{ outputValue.dayPlanOutput }}
-              </el-text>
-            </el-row>
-            <el-row>
-              <el-text type="success" size="large">
-                今日实时总产量：{{ outputValue.dayOutput }}
-              </el-text>
-            </el-row>
-            <el-row>
-              <el-text type="success" size="large">
-                完成度：{{
-                  outputValue.dayOutput
-                    ? (
-                        (outputValue.dayOutput / outputValue.dayPlanOutput) *
-                        100
-                      ).toFixed(2) + '%'
-                    : ''
-                }}
-              </el-text>
-            </el-row>
-            <el-row>
-              <el-text type="success" size="large">今日良品率：98%</el-text>
-            </el-row>
-          </el-scrollbar>
-        </Panel>
-        <Panel title="当天事故">
-          <el-scrollbar max-height="40vh">
-            <el-timeline style="padding-top: 0.1rem">
-              <el-timeline-item
-                v-for="(item, index) in accidentInfoList"
-                :key="index"
-                :color="(item.accidentStatus ? '#0bbd87' : '') as any"
-              >
-                <div class="element accident-wrapper">
-                  <el-row>
-                    <el-text :type="item.accidentStatus ? 'primary' : 'danger'">
-                      {{
-                        `事故状态: ${
-                          item.accidentStatus ? '已处理完成' : '未处理完成'
-                        }`
-                      }}
-                    </el-text>
-                  </el-row>
-                  <el-row>
-                    <el-text type="primary">
-                      {{ `事故发生时间: ${item.accidentStartTime}` }}
-                    </el-text>
-                  </el-row>
-                  <el-row v-if="item.accidentEndTime">
-                    <el-text type="primary">
-                      {{ `事故结束时间: ${item.accidentEndTime}` }}
-                    </el-text>
-                  </el-row>
-                  <el-row>
-                    <el-text type="warning">
-                      {{ `事故等级: ${item.accidentLevel}级事故` }}
-                    </el-text>
-                  </el-row>
-                  <el-row>
-                    <el-text type="warning">
-                      {{ `事故类型: ${item.accidentType}` }}
-                    </el-text>
-                  </el-row>
-                  <el-row>
-                    <el-text type="danger">
-                      {{ `事故内容:  ${item.accidentDesc}` }}
-                    </el-text>
-                  </el-row>
-                  <el-row>
-                    <el-text type="success">
-                      {{ `事故处理人: ${item.accidentHandler}` }}
-                    </el-text>
-                  </el-row>
-                </div>
-              </el-timeline-item>
-            </el-timeline>
-          </el-scrollbar>
-        </Panel>
-      </div>
-      <Sence ref="senceRef" :factoryInfoList="factoryInfoList"></Sence>
-    </div>
-  </div>
+  <FullScreenDragArrangement :layout="layout">
+    <template #0>
+      <Header>GuiGu工厂可视化系统</Header>
+    </template>
+    <template #1>
+      <Panel title="警告信息" border-color="#f67474">
+        <template #title>
+          <span style="color: #f67474">警告信息</span>
+        </template>
+        <el-scrollbar>
+          <el-row v-for="item in warningInfoList" :key="item.id">
+            <el-text type="danger">
+              {{
+                `${item.factoryName}：${item.accidentType} - ${item.accidentDesc}`
+              }}
+            </el-text>
+          </el-row>
+        </el-scrollbar>
+      </Panel>
+    </template>
+    <template #2>
+      <Panel title="当天产出">
+        <Charts style="height: 40vh" :option="planOption"></Charts>
+      </Panel>
+    </template>
+    <template #3>
+      <Panel title="生产计划">
+        <el-scrollbar height="9vh">
+          <el-row>
+            <el-text type="success" size="large">
+              今日计划总产量：{{ outputValue.dayPlanOutput }}
+            </el-text>
+          </el-row>
+          <el-row>
+            <el-text type="success" size="large">
+              今日实时总产量：{{ outputValue.dayOutput }}
+            </el-text>
+          </el-row>
+          <el-row>
+            <el-text type="success" size="large">
+              完成度：{{
+                outputValue.dayOutput
+                  ? (
+                      (outputValue.dayOutput / outputValue.dayPlanOutput) *
+                      100
+                    ).toFixed(2) + '%'
+                  : ''
+              }}
+            </el-text>
+          </el-row>
+          <el-row>
+            <el-text type="success" size="large">今日良品率：98%</el-text>
+          </el-row>
+        </el-scrollbar>
+      </Panel>
+    </template>
+    <template #4>
+      <Panel title="当天事故">
+        <el-scrollbar max-height="40vh">
+          <el-timeline style="padding-top: 0.1rem">
+            <el-timeline-item
+              v-for="(item, index) in accidentInfoList"
+              :key="index"
+              :color="item.accidentStatus ? '#0bbd87' : ''"
+            >
+              <div class="element accident-wrapper">
+                <el-row>
+                  <el-text :type="item.accidentStatus ? 'primary' : 'danger'">
+                    {{
+                      `事故状态: ${
+                        item.accidentStatus ? '已处理完成' : '未处理完成'
+                      }`
+                    }}
+                  </el-text>
+                </el-row>
+                <el-row>
+                  <el-text type="primary">
+                    {{ `事故发生时间: ${item.accidentStartTime}` }}
+                  </el-text>
+                </el-row>
+                <el-row v-if="item.accidentEndTime">
+                  <el-text type="primary">
+                    {{ `事故结束时间: ${item.accidentEndTime}` }}
+                  </el-text>
+                </el-row>
+                <el-row>
+                  <el-text type="warning">
+                    {{ `事故等级: ${item.accidentLevel}级事故` }}
+                  </el-text>
+                </el-row>
+                <el-row>
+                  <el-text type="warning">
+                    {{ `事故类型: ${item.accidentType}` }}
+                  </el-text>
+                </el-row>
+                <el-row>
+                  <el-text type="danger">
+                    {{ `事故内容:  ${item.accidentDesc}` }}
+                  </el-text>
+                </el-row>
+                <el-row>
+                  <el-text type="success">
+                    {{ `事故处理人: ${item.accidentHandler}` }}
+                  </el-text>
+                </el-row>
+              </div>
+            </el-timeline-item>
+          </el-timeline>
+        </el-scrollbar>
+      </Panel>
+    </template>
+    <Sence ref="senceRef" :factoryInfoList="factoryInfoList"></Sence>
+  </FullScreenDragArrangement>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import Header from '@/views/smartFactory/components/Header/Header.vue'
 import Sence from '@/views/smartFactory/components/Sence/Sence.vue'
 import Panel from '@/views/smartFactory/components/Panel/Panel.vue'
 import Charts from '@/views/smartFactory/components/Charts/Charts.vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import {
   AccidentInfoInterfaceRes,
   FactoryInfoInterfaceRes,
 } from '@/api/smartFactory/types'
 import { ElMessage } from 'element-plus'
 import { getAccidentInfo, getFactoryInfo } from '@/api/smartFactory'
+import FullScreenDragArrangement from '@/components/FullScreenDragArrangement/FullScreenDragArrangement.vue'
 //#region <计划>
 const planOption = ref({
   color: ['#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
@@ -263,12 +268,12 @@ watch(
   (newVal) => {
     if (senceRef.value && newVal.length) {
       newVal.forEach((item) => {
-        console.log(item)
-        // if (item.accidentInfoList.length) {
-        //   senceRef.value?.changeWarningColorByName(item.name)
-        // } else {
-        //   senceRef.value?.changeOriginColorByName(item.name)
-        // }
+        // console.log(item)
+        if (item.accidentInfoList.length) {
+          senceRef.value?.changeWarningColorByName(item.name)
+        } else {
+          senceRef.value?.changeOriginColorByName(item.name)
+        }
       })
     }
   },
@@ -278,13 +283,59 @@ watch(
   },
 )
 //#endregion
+const layout = ref([
+  {
+    x: 0,
+    y: 0,
+    w: 100,
+    h: 10,
+    i: '0',
+    static: true,
+  },
+  {
+    x: 0,
+    y: 5,
+    w: 30,
+    h: 20,
+    i: '1',
+    static: false,
+  },
+  {
+    x: 0,
+    y: 30,
+    w: 30,
+    h: 55,
+    i: '2',
+    static: false,
+  },
+  {
+    x: 70,
+    y: 5,
+    w: 30,
+    h: 20,
+    i: '3',
+    static: false,
+  },
+  {
+    x: 70,
+    y: 30,
+    w: 30,
+    h: 55,
+    i: '4',
+    static: false,
+  },
+])
+let timer: any
 onMounted(() => {
-  // setInterval(() => {
-  //   getFactoryInfoHandle()
-  //   getAccidentInfoHandle()
-  // }, 3000)
   getFactoryInfoHandle()
   getAccidentInfoHandle()
+  timer = setInterval(() => {
+    getFactoryInfoHandle()
+    getAccidentInfoHandle()
+  }, 10000)
+})
+onUnmounted(() => {
+  clearInterval(timer)
 })
 </script>
 
@@ -296,11 +347,6 @@ html {
 
 body {
   overflow: hidden;
-}
-
-.smart-factory {
-  width: 100vw;
-  height: 100vh;
 }
 
 .smart-factory-content {
@@ -342,5 +388,9 @@ body {
 
 .accident-wrapper {
   padding: 0.1rem;
+}
+
+:deep(.el-text) {
+  font-size: 0.15rem;
 }
 </style>
