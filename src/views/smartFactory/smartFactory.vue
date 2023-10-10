@@ -1,7 +1,7 @@
 <template>
   <FullScreenDragArrangement :layout="layout">
     <template #0>
-      <Header>GuiGu工厂可视化系统</Header>
+      <Header>智慧工厂可视化系统</Header>
     </template>
     <template #1>
       <Panel title="警告信息" border-color="#f67474">
@@ -12,7 +12,9 @@
           <el-row v-for="item in warningInfoList" :key="item.id">
             <el-text type="danger">
               {{
-                `${item.factoryName}：${item.accidentType} - ${item.accidentDesc}`
+                `${item.factoryName.replace('GuiGu-', '')}：${
+                  item.accidentType
+                } - ${item.accidentDesc}`
               }}
             </el-text>
           </el-row>

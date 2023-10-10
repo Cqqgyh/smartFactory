@@ -160,7 +160,8 @@ const updateRackInfo = (name: string) => {
   if (name) {
     const factoryInfo = props.factoryInfoList.find((item) => item.name === name)
     const data = {
-      name: factoryInfo?.name,
+      // 去除name中的GuiGu
+      name: factoryInfo?.name.replace('GuiGu-', ''),
       content: [
         { label: '温度', value: factoryInfo?.temperature + '℃' },
         { label: '湿度', value: factoryInfo?.humidity + '%' },
